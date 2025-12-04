@@ -6,7 +6,7 @@
 /*   By: brian <brian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 18:50:54 by brian             #+#    #+#             */
-/*   Updated: 2025/10/16 18:51:23 by brian            ###   ########.fr       */
+/*   Updated: 2025/12/03 19:06:48 by brian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,11 @@
 
 Serializer::Serializer(void) {}
 
-Serializer::Serializer(Serializer const &other) { *this = other; }
+Serializer::Serializer(Serializer const &other) { (void)other; }
 
 Serializer &Serializer::operator=(Serializer const &other) {
-  if (this != &other) {
-    *this = other;
-  }
-  return (*this);
+  (void)other;
+  return *this; 
 }
 
 Serializer::~Serializer(void) {}
