@@ -6,7 +6,7 @@
 /*   By: brian <brian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 15:30:12 by brian             #+#    #+#             */
-/*   Updated: 2025/10/16 16:03:31 by brian            ###   ########.fr       */
+/*   Updated: 2025/12/05 02:34:24 by brian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 
 #define MIN_INT std::numeric_limits<int>::min()
 #define MAX_INT std::numeric_limits<int>::max()
-#define MIN_FLOAT std::numeric_limits<float>::min()
+#define MIN_FLOAT std::numeric_limits<float>::lowest()
 #define MAX_FLOAT std::numeric_limits<float>::max()
-#define MIN_DOUBLE std::numeric_limits<double>::min()
+#define MIN_DOUBLE std::numeric_limits<double>::lowest()
 #define MAX_DOUBLE std::numeric_limits<double>::max()
 
 enum e_type {
