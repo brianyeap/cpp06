@@ -6,11 +6,46 @@
 /*   By: brian <brian@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 16:53:26 by brian             #+#    #+#             */
-/*   Updated: 2025/10/16 17:29:53 by brian            ###   ########.fr       */
+/*   Updated: 2025/12/17 02:16:00 by brian            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ScalarConverter.hpp"
+
+static bool isScientificStr(const std::string &s) {
+  return (s.find('e') != std::string::npos) || (s.find('E') != std::string::npos);
+}
+
+static std::string noSciDouble(double d) {
+  std::ostringstream oss;
+  oss << d;
+  std::string s = oss.str();
+
+  double ip = 0.0;
+  bool isWhole = (std::modf(d, &ip) == 0.0);
+  bool isSci = isScientificStr(s);
+
+  if (isWhole && !isSci)
+    s += ".0";
+
+  return s;
+}
+
+static std::string noSciFloat(float f) {
+  std::ostringstream oss;
+  oss << f;
+  std::string s = oss.str();
+
+  double ip = 0.0;
+  bool isWhole = (std::modf(static_cast<double>(f), &ip) == 0.0);
+  bool isSci = isScientificStr(s);
+
+  if (isWhole && !isSci)
+    s += ".0";
+
+  s += "f";
+  return s;
+}
 
 void printSpecial(const std::string &str) {
   if (str == "nan" || str == "nanf") {
@@ -44,8 +79,8 @@ void convertChar(const std::string &str, size_t &len) {
   } else
     std::cout << "Non displayable" << std::endl;
   std::cout << "int: " << static_cast<int>(c) << std::endl;
-  std::cout << "float: " << static_cast<float>(c) << ".0f" << std::endl;
-  std::cout << "double: " << static_cast<double>(c) << ".0" << std::endl;
+  std::cout << "float: " << noSciFloat(static_cast<float>(c)) << std::endl;
+  std::cout << "double: " << noSciDouble(static_cast<double>(c)) << std::endl;
 }
 
 void convertInt(const std::string &str) {
@@ -65,14 +100,13 @@ void convertInt(const std::string &str) {
     std::cout << "impossible" << std::endl;
   else
     std::cout << static_cast<int>(l) << std::endl;
-  std::cout << "float: " << static_cast<float>(l) << ".0f" << std::endl;
-  std::cout << "double: " << static_cast<double>(l) << ".0" << std::endl;
+  std::cout << "float: " << noSciFloat(static_cast<float>(l)) << std::endl;
+  std::cout << "double: " << noSciDouble(static_cast<double>(l)) << std::endl;
 }
 
 void convertFloat(const std::string &str) {
   float f = std::atof(str.c_str());
-  bool tolerance = std::fabs(f - static_cast<int>(f)) < 0.0000000000001;
-
+  
   std::cout << "char: ";
   if (f < 0 || f > 127)
     std::cout << "impossible" << std::endl;
@@ -91,14 +125,12 @@ void convertFloat(const std::string &str) {
   if (f < MIN_FLOAT || f > MAX_FLOAT)
     std::cout << "impossible" << std::endl;
   else
-    std::cout << f << (tolerance ? ".0f" : "f") << std::endl;
-  std::cout << "double: " << static_cast<double>(f) << (tolerance ? ".0" : "")
-            << std::endl;
+    std::cout << noSciFloat(f) << std::endl;
+  std::cout << "double: " << noSciDouble(static_cast<double>(f)) << std::endl;
 }
 
 void convertDouble(const std::string &str) {
   double d = std::atof(str.c_str());
-  bool tolerance = std::fabs(d - static_cast<int>(d)) < 0.0000000000001;
 
   std::cout << "char: ";
   if (d < 0 || d > 127)
@@ -118,11 +150,10 @@ void convertDouble(const std::string &str) {
   if (d < MIN_FLOAT || d > MAX_FLOAT)
     std::cout << "impossible" << std::endl;
   else
-    std::cout << static_cast<float>(d) << (tolerance ? ".0f" : "f")
-              << std::endl;
+    std::cout << noSciFloat(static_cast<float>(d)) << std::endl;
   std::cout << "double: ";
   if (d < MIN_DOUBLE || d > MAX_DOUBLE)
     std::cout << "impossible" << std::endl;
   else
-    std::cout << d << std::endl;
+    std::cout << noSciDouble(d) << std::endl;
 }
